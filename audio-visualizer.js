@@ -5,8 +5,14 @@ let analyser
 let frequencyArray
 
 // Canvas variables
-const canvas = document.getElementById("canvas")
-const ctx = canvas.getContext("2d")
+const canvas1 = document.getElementById("canvas-1")
+const canvas2 = document.getElementById("canvas-2")
+const canvas3 = document.getElementById("canvas-3")
+const ctx1 = canvas1.getContext("2d")
+const ctx2 = canvas2.getContext("2d")
+const ctx3 = canvas3.getContext("2d")
+
+// console.log(ctx1, ctx2, ctx3)
 
 const centerX = 300 / 2
 const centerY = 300 / 2
@@ -26,7 +32,11 @@ function startAudio() {
   frequencyArray = new Uint8Array(analyser.frequencyBinCount)
 
   audio.play()
-  render()
+
+  console.log(ctx1)
+  render(ctx1, "#65A65D")
+  render(ctx2, "#AE4237")
+  render(ctx3, "#DFB856")
 }
 
 // Add event listener for audio button
@@ -34,8 +44,11 @@ playButton.addEventListener("click", (e) => {
   startAudio()
 })
 
-// Render canvas
-function render() {
+// Render canvases 
+function render(ctx, color) {
+
+  console.log(ctx, color)
+
   ctx.clearRect(0, 0, 300, 300)
   ctx.beginPath()
   // ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI)
@@ -54,11 +67,14 @@ function render() {
     const x2 = (Math.cos(step * i) * (radius + barLength)) + centerX
     const y2 = (Math.sin(step * i) * (radius + barLength)) + centerY
 
+    ctx.strokeStyle = color
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
    })
 
   ctx.stroke()
 
-  requestAnimationFrame(render)
+  requestAnimationFrame(() => {
+    render(ctx, color)
+  })
 }
